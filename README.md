@@ -10,3 +10,4 @@
 
 Authors:
 * Durga Akhil Mundroy (01FB15ECS097)
+* Harsh Garg (01FB15ECS118)
