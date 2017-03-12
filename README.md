@@ -8,6 +8,6 @@
 * Once you want others to see and review your changes, create a pull request.
 * We'll go through the pull request and merge them into the master project.
 
-Authors:
+### Authors: ###
 * Durga Akhil Mundroy (01FB15ECS097)
 * Harsh Garg (01FB15ECS118)
