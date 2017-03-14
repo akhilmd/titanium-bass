@@ -4,5 +4,6 @@
 using namespace std;
 
 string parse(string S) {
-    return select();
+	Database* db = new Database("dummy-db");
+	return db->create();
 }
