@@ -37,23 +37,22 @@ class Entry {
 
 class Relation {
     private:
-        vector<string> schema;
+        map<string, string> schema;
         string relation_name;
-        string primary_key;
         vector<Entry> data_rows;
         int row_size;
 
     public:
-        Relation(string relation_name, vector<string> schema);
-        Relation(string relation_name, vector<string> schema, vector<Entry> rows);
-        Relation(string relation_name, vector<string> schema, vector<string> keys, string primary_key);
+		Relation();
+        Relation(string relation_name, map<string, string> schema);
+        Relation(string relation_name, map<string, string> schema, vector<Entry> rows);
+        Relation(string relation_name, map<string, string> schema, vector<string> keys, string primary_key);
         ~Relation();
 
         void set_name(string rName) { relation_name = rName; }
         bool delete_row(string att_name, string att_value);
         string getName() { return relation_name; }
-        string get_primary_key() { return primary_key; }
-
+        
         // Query functions
         bool select_statement(); // For select *
         bool select_statement(string att_name, string att_value); // For where cluase
@@ -73,10 +72,10 @@ class Relation {
 class Database {
     private:
         string db_name;
-        // un-comment after implemented
-        // vector<Relation> relations;
-        int relations_size;
-
+		
+        vector<Relation*> relations;
+		int relations_size;
+		
         void flush_to_disk(); // Used by destructor
         void get_from_disk(); // Used by constructor
 
@@ -164,4 +163,6 @@ class Database {
         // Close any open file objects.
         // Remove lock on DB.
         string close();
+		
+		string get_db_name() { return db_name; }
 };

@@ -5,5 +5,11 @@ using namespace std;
 
 string parse(string S) {
 	Database* db = new Database("dummy-db");
-	return db->create();
+	
+	//Testing Duplicates
+	// db->create_table("dummy-table", {{"id","int"},{"name","string"}});
+	// db->create_table("dummy-table", {{"id","int"},{"name","string"}});
+	
+	return db->create_table("dummy-table", {{"id","int"},{"name","string"}});
+	
 }
