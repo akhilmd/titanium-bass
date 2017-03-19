@@ -8,9 +8,13 @@
 #include <algorithm>
 #include <set>
 #include <iterator>
+#include <stdio.h>
 #include <sys/stat.h>
 
 using namespace std;
+
+// More dynamic enum of types
+extern map<string, int> type_code;
 
 class Entry {
     private:
@@ -39,19 +43,22 @@ class Relation {
     private:
         map<string, string> schema;
         string relation_name;
-        vector<Entry> data_rows;
+		vector<string> col_names;
+        vector<Entry*> data_rows;
         int row_size;
 
     public:
 		Relation();
-        Relation(string relation_name, map<string, string> schema);
+        Relation(string relation_name, map<string, string> schema, vector<string> col_names);
         Relation(string relation_name, map<string, string> schema, vector<Entry> rows);
         Relation(string relation_name, map<string, string> schema, vector<string> keys, string primary_key);
         ~Relation();
 
         void set_name(string rName) { relation_name = rName; }
         bool delete_row(string att_name, string att_value);
-        string getName() { return relation_name; }
+        string get_name() { return relation_name; }
+		map<string, string> get_schema() { return schema; }
+		vector<string> get_col_names() { return col_names;}
         
         // Query functions
         bool select_statement(); // For select *
@@ -59,9 +66,9 @@ class Relation {
         bool alter_statement(string att_name, string data);
 
         // Depends on parsers output
-        bool insert_row(string data);
-        bool insert_row(vector<string> data);
-
+        void insert_row(vector<string> data);
+		void increment_row_size() { row_size++; }
+		
         //Operators Overloading
         Relation& operator=(const Relation& other);
         friend ostream& operator<<(ostream& os, Relation& obj);
@@ -74,7 +81,7 @@ class Database {
         string db_name;
 		
         vector<Relation*> relations;
-		int relations_size;
+        int relations_size;
 		
         void flush_to_disk(); // Used by destructor
         void get_from_disk(); // Used by constructor
@@ -101,7 +108,7 @@ class Database {
         // the following functions unless specified otherwise.
 
         // Create a table file and a schema file for that table.
-        string create_table (string relation_name, map<string, string> schema);
+        string create_table (string relation_name, map<string, string> schema, vector<string> col_name);
 
         // Insert a row of data into table.
         // Will call insert_row of appropriate Relation object.

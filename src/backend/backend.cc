@@ -2,6 +2,8 @@
 
 using namespace std;
 
+map<string, int> type_code = {{"int", 0}, {"string", 1}, {"float", 2}};
+
 // Dummy Implementation unless otherwise specified
 
 
@@ -25,24 +27,70 @@ string Database::open() {
 	return "open";
 }
 
-string Database::create_table (string relation_name, map<string, string> schema) {
+string Database::create_table(string relation_name, map<string, string> schema, vector<string> col_names) {
 	
 	// Checking if table name exists
 	vector<Relation*>::iterator i;
 	for(i = relations.begin(); i != relations.end(); i++) {
-		if(!(*i)->getName().compare(relation_name))
-			return "Error! table already exists";
+		if(!(*i)->get_name().compare(relation_name))
+			return "Backend Error: Table already exists";
 	}
 	
 	// Else create
-	Relation *r = new Relation(relation_name, schema);
+	Relation *r = new Relation(relation_name, schema, col_names);
 	this->relations.push_back(r);
 	this->relations_size++;
 	return "Table created";
 }
 
 string Database::insert(string relation_name, vector<string> data_items) {
-	return "insert";
+	
+	// Check if relation existis
+	vector<Relation*>::iterator relation;
+	for(relation = relations.begin(); relation != relations.end(); relation++) {
+		if(!(*relation)->get_name().compare(relation_name))
+			break;
+	}
+	
+	if(relation == relations.end())
+		return "Backend error: Table does not exisit";
+	
+	// Check if schema is followed
+	if(data_items.size() > (*relation)->get_schema().size()) {
+		return "Backend Error: Too many attributes given";
+	}
+	
+	if(data_items.size() < (*relation)->get_schema().size()) {
+		return "Backend Error: Too few attributes given";
+	}
+	
+	for(int i = 0; i < data_items.size(); i++) {
+		
+		switch(type_code[(*relation)->get_schema()[(*relation)->get_col_names()[i]]]) {
+			case 0: {
+				char* leftover;
+				long val = strtol(data_items[i].c_str(), &leftover, 0);
+				if(*leftover != '\0')
+					return "Backend error: Invalid integer format";
+				break;
+			}
+			case 1: { // To be filled later 
+				break;
+			}
+			case 2: {
+				char* endptr = 0;
+				strtod(data_items[i].c_str(), &endptr);
+				if(*endptr != '\0' || endptr == data_items[i].c_str())
+					return "Backend error: Invalid float format";
+				break;
+			}
+		}
+	}
+	
+	// Entry *e = new Entry(data_items);
+	(*relation)->insert_row(data_items);
+	(*relation)->increment_row_size();
+	return "Row inserted";
 }
 
 string Database::select(string relation_name) {
@@ -126,14 +174,24 @@ Relation::~Relation() {
 	
 }
 
-Relation::Relation(string relation_name, map<string, string> schema) {
+Relation::Relation(string relation_name, map<string, string> schema, vector<string> col_names) {
 	this->relation_name = relation_name;
 	this->schema = schema;
+	this->col_names = col_names;
+}
+
+void Relation::insert_row(vector<string> data_items) {
+	Entry *e = new Entry(data_items);
+	this->data_rows.push_back(e);
 }
 
 /* Entry Class */
 
 Entry::Entry() {
+	
+}
+
+Entry::Entry(vector<string> row) {
 	
 }
 
