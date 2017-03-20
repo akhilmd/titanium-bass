@@ -192,7 +192,7 @@ Entry::Entry() {
 }
 
 Entry::Entry(vector<string> row) {
-	
+	this->row = row;
 }
 
 Entry::~Entry() {
