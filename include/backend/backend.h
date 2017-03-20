@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include <iostream>
+#include <iomanip>
 #include <sstream>
 #include <iomanip>
 #include <fstream>
@@ -29,8 +30,8 @@ class Entry {
         // Used for alter table
         void set_row_by_string(int index, string data);
 
-        vector<string> get_row() { return row; }
-
+		vector<string> get_row() { return row; }
+       
         Entry& operator=(const Entry& other);
 
         // Overloading Operators
@@ -54,9 +55,11 @@ class Relation {
         Relation(string relation_name, map<string, string> schema, vector<string> keys, string primary_key);
         ~Relation();
 
+		vector<Entry*> get_rows() { return data_rows; }
         void set_name(string rName) { relation_name = rName; }
         bool delete_row(string att_name, string att_value);
         string get_name() { return relation_name; }
+		int get_row_size() { return row_size; }
 		map<string, string> get_schema() { return schema; }
 		vector<string> get_col_names() { return col_names;}
         
@@ -82,7 +85,8 @@ class Database {
 		
         vector<Relation*> relations;
         int relations_size;
-		
+		vector<Relation*>::iterator get_table(string relation_name);
+
         void flush_to_disk(); // Used by destructor
         void get_from_disk(); // Used by constructor
 

@@ -30,11 +30,9 @@ string Database::open() {
 string Database::create_table(string relation_name, map<string, string> schema, vector<string> col_names) {
 	
 	// Checking if table name exists
-	vector<Relation*>::iterator i;
-	for(i = relations.begin(); i != relations.end(); i++) {
-		if(!(*i)->get_name().compare(relation_name))
-			return "Backend Error: Table already exists";
-	}
+	vector<Relation*>::iterator i = get_table(relation_name);
+	if(i != relations.end())
+		return "Backend Error: Table already exists";
 	
 	// Else create
 	Relation *r = new Relation(relation_name, schema, col_names);
@@ -46,11 +44,7 @@ string Database::create_table(string relation_name, map<string, string> schema, 
 string Database::insert(string relation_name, vector<string> data_items) {
 	
 	// Check if relation existis
-	vector<Relation*>::iterator relation;
-	for(relation = relations.begin(); relation != relations.end(); relation++) {
-		if(!(*relation)->get_name().compare(relation_name))
-			break;
-	}
+	vector<Relation*>::iterator relation = get_table(relation_name);
 	
 	if(relation == relations.end())
 		return "Backend error: Table does not exisit";
@@ -94,7 +88,60 @@ string Database::insert(string relation_name, vector<string> data_items) {
 }
 
 string Database::select(string relation_name) {
-	return "select 1";
+	vector<Relation*>::iterator relation = get_table(relation_name);
+	
+	if(relation == relations.end())
+		return "Backend error: Table does not exisit";
+	
+	// will try to make each as function calls
+	stringstream  seperator;
+	stringstream  table_headings;
+	stringstream  data;
+	stringstream  table;
+	
+	
+	const char separator = ' ';
+	const int atrribute_width = 10;
+    
+	vector<string>::iterator cols;
+	
+	// cols = (*relation)->get_col_names().begin();
+	
+	vector<string> col_names = (*relation)->get_col_names();
+	
+	cols = col_names.begin();
+	
+	for(cols = col_names.begin(); cols != col_names.end(); cols++) {
+		seperator << setfill('-') << setw(1) << "+" << setw(atrribute_width) << "-";
+	}
+	seperator << setw(1) << "+" << endl << setfill(' ') << setw(1);
+	
+	table << seperator.str();
+	
+	for(cols = col_names.begin(); cols != col_names.end(); cols++) {
+		table_headings << "|" << setw(atrribute_width) << left << (*cols) << setw(1) ;
+	}
+	
+	table_headings << setw(1) << "|" << endl;
+	
+	table << table_headings.str();
+	table << seperator.str();
+	
+	// Do not delete for now
+	// cout << setfill('-') << setw(1) << "+" << setw(15) << "-" << setw(1) << "+" << setw(15) << "-" << setw(1) << "+" << setw(5) << "-" << setw(1) << "+" << endl;
+	// cout << setfill(' ') << setw(1) << "|" << setw(15) << left << "First Name" << setw(1) << "|" << setw(15) << left << "Last Name" << setw(1) << "|"  << setw(5) << left << "Age" << setw(1) << "|" << endl;
+	// cout << (*(*relation)->get_rows().begin()[1]->get_row().begin());
+	
+	
+	vector<Entry*> row = (*relation)->get_rows();
+	
+	for(int j = 0; j < row.size(); j++) {
+		for(int k = 0; k < row[j]->get_row().size(); k++)
+			table << "|" << setw(atrribute_width) << left << row[j]->get_row()[k] << setw(1) ;
+		table << setw(1) << "|" << endl << seperator.str();
+	}
+	
+	return table.str();
 }
 
 string Database::select(
@@ -178,6 +225,16 @@ Relation::Relation(string relation_name, map<string, string> schema, vector<stri
 	this->relation_name = relation_name;
 	this->schema = schema;
 	this->col_names = col_names;
+}
+
+vector<Relation*>::iterator Database::get_table(string relation_name) {
+	vector<Relation*>::iterator relation;
+	for(relation = relations.begin(); relation != relations.end(); relation++) {
+		if(!(*relation)->get_name().compare(relation_name))
+			break;
+	}
+	
+	return relation;
 }
 
 void Relation::insert_row(vector<string> data_items) {
