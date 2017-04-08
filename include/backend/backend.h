@@ -30,6 +30,7 @@ class Entry {
         // Used for alter table
         void set_row_by_string(int index, string data);
 
+		void update_row(ptrdiff_t index, string data_item) { row[index] = data_item; }
 		vector<string> get_row() { return row; }
        
         Entry& operator=(const Entry& other);
@@ -62,13 +63,10 @@ class Relation {
 		int get_row_size() { return row_size; }
 		map<string, string> get_schema() { return schema; }
 		vector<string> get_col_names() { return col_names;}
-        
-        // Query functions
-        bool select_statement(); // For select *
-        bool select_statement(string att_name, string att_value); // For where cluase
-        bool alter_statement(string att_name, string data);
-
-        // Depends on parsers output
+        int clear_entries();
+		void reset_row_size() { row_size = 0; }
+		
+		
         void insert_row(vector<string> data);
 		void increment_row_size() { row_size++; }
 		
@@ -92,6 +90,9 @@ class Database {
 
         bool is_created;
         bool is_open;
+		
+		string print_table(Relation *relation, vector<string> col_names, vector<vector<string>> rows);
+		
     public:
         Database(string db_name);
         ~Database();
@@ -99,7 +100,7 @@ class Database {
         // All functions return a message that is to be displayed
         // on the CLI if at all.
 
-        // Creates a database with the name db_name.
+		// Creates a database with the name db_name.
         string create();
 
         // If database is not created, return error in all
@@ -112,7 +113,7 @@ class Database {
         // the following functions unless specified otherwise.
 
         // Create a table file and a schema file for that table.
-        string create_table (string relation_name, map<string, string> schema, vector<string> col_name);
+        string create_table (string relation_name, vector <string> data_types, vector<string> col_name);
 
         // Insert a row of data into table.
         // Will call insert_row of appropriate Relation object.
