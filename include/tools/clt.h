@@ -1,4 +1,8 @@
-#include <iostream>
-#include <string>
+#include <stdio.h>
+#include <string.h>
 
-int start();
+#include "../../include/sql-compiler/c-cc-interface.h"
+
+extern int yyerror(char*);
+
+extern void* db;
