@@ -8,9 +8,13 @@
 #include <algorithm>
 #include <set>
 #include <iterator>
+#include <stdio.h>
 #include <sys/stat.h>
 
 using namespace std;
+
+// More dynamic enum of types
+extern map<string, int> type_code;
 
 class Entry {
     private:
@@ -37,32 +41,34 @@ class Entry {
 
 class Relation {
     private:
-        vector<string> schema;
+        map<string, string> schema;
         string relation_name;
-        string primary_key;
-        vector<Entry> data_rows;
+		vector<string> col_names;
+        vector<Entry*> data_rows;
         int row_size;
 
     public:
-        Relation(string relation_name, vector<string> schema);
-        Relation(string relation_name, vector<string> schema, vector<Entry> rows);
-        Relation(string relation_name, vector<string> schema, vector<string> keys, string primary_key);
+		Relation();
+        Relation(string relation_name, map<string, string> schema, vector<string> col_names);
+        Relation(string relation_name, map<string, string> schema, vector<Entry> rows);
+        Relation(string relation_name, map<string, string> schema, vector<string> keys, string primary_key);
         ~Relation();
 
         void set_name(string rName) { relation_name = rName; }
         bool delete_row(string att_name, string att_value);
-        string getName() { return relation_name; }
-        string get_primary_key() { return primary_key; }
-
+        string get_name() { return relation_name; }
+		map<string, string> get_schema() { return schema; }
+		vector<string> get_col_names() { return col_names;}
+        
         // Query functions
         bool select_statement(); // For select *
         bool select_statement(string att_name, string att_value); // For where cluase
         bool alter_statement(string att_name, string data);
 
         // Depends on parsers output
-        bool insert_row(string data);
-        bool insert_row(vector<string> data);
-
+        void insert_row(vector<string> data);
+		void increment_row_size() { row_size++; }
+		
         //Operators Overloading
         Relation& operator=(const Relation& other);
         friend ostream& operator<<(ostream& os, Relation& obj);
@@ -73,10 +79,10 @@ class Relation {
 class Database {
     private:
         string db_name;
-        // un-comment after implemented
-        // vector<Relation> relations;
+		
+        vector<Relation*> relations;
         int relations_size;
-
+		
         void flush_to_disk(); // Used by destructor
         void get_from_disk(); // Used by constructor
 
@@ -102,7 +108,7 @@ class Database {
         // the following functions unless specified otherwise.
 
         // Create a table file and a schema file for that table.
-        string create_table (string relation_name, map<string, string> schema);
+        string create_table (string relation_name, map<string, string> schema, vector<string> col_name);
 
         // Insert a row of data into table.
         // Will call insert_row of appropriate Relation object.
@@ -164,4 +170,6 @@ class Database {
         // Close any open file objects.
         // Remove lock on DB.
         string close();
+		
+		string get_db_name() { return db_name; }
 };
