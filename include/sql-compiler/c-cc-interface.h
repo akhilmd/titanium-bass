@@ -8,6 +8,7 @@ const char* database_create(void*, char*);
 const char* database_use(void**, char*);
 const char* database_close(void**, char*);
 const char* database_create_table(void**, char*, char**, char**, int);
+const char* database_select(void**, char*);
 #ifdef __cplusplus
 }
 #endif
