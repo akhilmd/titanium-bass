@@ -54,19 +54,18 @@ extern int yydebug;
     IDENTIFIER = 264,
     SELECT = 265,
     COMMA = 266,
-    WHERE = 267,
-    OP = 268,
-    CP = 269,
-    EQI = 270,
-    EOS = 271,
-    EOL = 272,
-    STAR = 273,
-    S_DATA = 274,
-    S_DATATYPE = 275,
-    F_DATA = 276,
-    F_DATATYPE = 277,
-    I_DATA = 278,
-    I_DATATYPE = 279
+    OP = 267,
+    CP = 268,
+    EQI = 269,
+    EOS = 270,
+    EOL = 271,
+    STAR = 272,
+    S_DATA = 273,
+    S_DATATYPE = 274,
+    F_DATA = 275,
+    F_DATATYPE = 276,
+    I_DATA = 277,
+    I_DATATYPE = 278
   };
 #endif
 
