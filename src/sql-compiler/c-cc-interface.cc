@@ -75,3 +75,20 @@ const char* database_create_table(void** db, char* table_name, char** col_names,
     );
     return ret_val->c_str();
 }
+
+const char* database_select(void** db, char* table_name) {
+    Database* new_db = reinterpret_cast<Database*>(*db);
+    if (new_db == NULL) {
+            return (new string("ERROR: Please connect to a database first!"))->c_str();
+    }
+    // vector<string> v_col_names;
+    // char* colnames1 = "Harsh";
+    // char** colnames = &colnames1;
+    // int i = 0;
+    // for (i=0;i<1;++i) {
+    //      v_col_names.push_back(string(colnames[i]));
+    //  }
+    //  new_db->insert(string(table_name),v_col_names);
+    string* ret_val = new string(new_db->select(string(table_name)));
+    return ret_val->c_str();
+}

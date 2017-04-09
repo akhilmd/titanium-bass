@@ -15,11 +15,15 @@ char** col_dts;
 %token CLOSE
 %token DATABASE
 %token TABLE
+%token FROM
 %token IDENTIFIER
-%token COMMA
+%token SELECT
+%token COMMA 
 %token OP CP
+%token EQI
 %token EOS
 %token EOL
+%token STAR
 %token S_DATA S_DATATYPE F_DATA F_DATATYPE I_DATA I_DATATYPE
 %%
 query:
@@ -40,6 +44,10 @@ query:
     | CLOSE DATABASE IDENTIFIER EOS EOL {
         printf("%s\n", database_close(&db, $3));
     }
+
+    | SELECT STAR FROM IDENTIFIER EOS EOL {
+        printf("%s\n", database_select(&db, $4)); }
+    
     ;
 dbase: DATABASE IDENTIFIER {
         $$ = $2;
