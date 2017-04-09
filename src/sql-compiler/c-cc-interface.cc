@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string>
+#include <vector>
 
 #include "../../include/sql-compiler/c-cc-interface.h"
 #include "../../include/backend/backend.h"
@@ -50,12 +51,27 @@ const char* database_close(void** db, char* db_name) {
 }
 
 const char* database_create_table(void** db, char* table_name, char** col_names, char** col_dts, int noc) {
-    int i = 0;
-
-    printf("%s\n", table_name);
-
-    for (i=0;i<noc;++i) {
-        printf("%s : %s\n", col_names[i], col_dts[i]);
+    Database* new_db = reinterpret_cast<Database*>(*db);
+    if (new_db == NULL) {
+        return (new string("ERROR: Please connect to a database first!"))->c_str();
     }
-    return "okkda";
+
+    vector<string> v_col_names;
+    vector<string> v_col_dts;
+
+    // database exists
+
+    int i = 0;
+    for (i=0;i<noc;++i) {
+        v_col_names.push_back(string(col_names[i]));
+        v_col_dts.push_back(string(col_dts[i]));
+    }
+    string* ret_val = new string (
+        new_db->create_table (
+            string(table_name),
+            v_col_dts,
+            v_col_names
+        )
+    );
+    return ret_val->c_str();
 }

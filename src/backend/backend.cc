@@ -66,7 +66,9 @@ string Database::close() {
     remove((db_path + string("/lockfile")).c_str());
     if (1) {
         this->is_open = false;
-        return string("rc= false");
+        return string("Disconnected from ") + this->db_name;
+    } else {
+        return string("ERROR: [unknown] Database.close failed!");
     }
 }
 

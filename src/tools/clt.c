@@ -29,6 +29,6 @@ int main(int argc, char **argv) {
 }
 
 int yyerror(char *s) {
-    fprintf(stderr, "error: %s\n", s);
-    printf("%s\n", yytext);
+    fprintf(stderr, "ERROR: %s!\n", s);
+    printf("at: %s\n", yytext);
 }

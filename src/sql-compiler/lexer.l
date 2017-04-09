@@ -3,11 +3,11 @@
 #include "../../../include/sql-compiler/gen/grammar.tab.h"
 %}
 %%
-"cr" { return CREATE; }
-"db" { return DATABASE; }
-"tb" { return TABLE; }
+"create" { return CREATE; }
+"database" { return DATABASE; }
+"table" { return TABLE; }
 "use" { return USE; }
-"cl" { return CLOSE; }
+"close" { return CLOSE; }
 "(" { return OP; }
 ")" { return CP; }
 "," { return COMMA; }

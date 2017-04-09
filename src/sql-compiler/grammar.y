@@ -53,6 +53,15 @@ col_def_list: col_def | col_def COMMA col_def_list  {
     }
     ;
 col_def: IDENTIFIER datatype {
+        // rudimentary check for duplicate columns
+        int i = 0;
+        for (i=0;i<noc;++i) {
+            if (strcmp(col_names[i], $1) == 0) {
+                // error out
+                yyerror("Duplicate column names");
+                return 0;
+            }
+        }
         // We are supporting only 10 columns
         col_names[noc] = $1;
         noc++;
