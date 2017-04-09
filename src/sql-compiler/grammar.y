@@ -18,13 +18,12 @@ char** col_dts;
 %token FROM
 %token IDENTIFIER
 %token SELECT
-%token COMMA WHERE
+%token COMMA 
 %token OP CP
 %token EQI
 %token EOS
 %token EOL
 %token STAR
-%right '='    /* right associativity */
 %token S_DATA S_DATATYPE F_DATA F_DATATYPE I_DATA I_DATATYPE
 %%
 query:
@@ -46,7 +45,7 @@ query:
         printf("%s\n", database_close(&db, $3));
     }
 
-    | SELECT STAR FROM IDENTIFIER ST5 EOS EOL {
+    | SELECT STAR FROM IDENTIFIER EOS EOL {
         printf("%s\n", database_select(&db, $4)); }
     
     ;
@@ -58,11 +57,6 @@ table: TABLE IDENTIFIER OP col_def_list CP {
         $$ = $2;
     }
     ;
-ST5:  WHERE 
-    |
-    ;
-
-
 col_def_list: col_def | col_def COMMA col_def_list  {
     }
     ;
@@ -90,5 +84,4 @@ datatype: S_DATATYPE {
         col_dts[noc] = $1;
     }
     ;
-
 %%
