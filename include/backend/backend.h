@@ -79,6 +79,7 @@ class Relation {
 
 class Database {
     private:
+        string cwd;
         string db_name;
 		
         vector<Relation*> relations;
@@ -107,7 +108,7 @@ class Database {
         // the following functions unless specified otherwise.
 
         // Makes database ready for operations.
-        string open();
+        string connect();
 
         // If database is not opened, return error in all
         // the following functions unless specified otherwise.
@@ -146,8 +147,8 @@ class Database {
         // delete() would be a better name but key-word
 
         // Delete all rows in a table
-        string remove(string relation_name);
-        string remove(
+        string delete_rows(string relation_name);
+        string delete_rows(
             string relation_name,
             string where_column_name,
             string where_data_item);

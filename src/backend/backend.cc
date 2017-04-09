@@ -1,7 +1,10 @@
 #include "../../include/backend/backend.h"
+#include <boost/filesystem.hpp>
+#include <sys/file.h>
+#include <stdio.h>
 
 using namespace std;
-
+namespace fs = boost::filesystem;
 map<string, int> type_code = {{"int", 0}, {"string", 1}, {"float", 2}};
 
 // Dummy Implementation unless otherwise specified
@@ -11,6 +14,9 @@ map<string, int> type_code = {{"int", 0}, {"string", 1}, {"float", 2}};
 Database::Database(string db_name) {
     this->db_name = db_name;
     this->relations_size = 0;
+    this->is_open = false;
+    fs::path full_path( fs::current_path() );
+    this->cwd = string(full_path.c_str());
 }
 
 Database::~Database() {
@@ -19,12 +25,49 @@ Database::~Database() {
 
 
 string Database::create() {
-    return string("create");
+    string message = string("Current Working Directory: ") + this->cwd + string("\n");
+    if (fs::create_directories(this->db_name)) {
+        return message+string("Database Created");
+    } else {
+        return message+string("Database may already exist");
+    }
 }
 
 
-string Database::open() {
-    return "open";
+string Database::connect() {
+    // if connected to a db, close it first
+    // cout << this->is_open << endl;
+    if (this->is_open) {
+        return string("ERROR: Please disconnect first!");
+    }
+    // check if db folder exists
+    string db_path = this->cwd+"/"+this->db_name;
+    if (fs::exists(db_path) && fs::is_directory(db_path)) {
+        int fd = open((db_path + string("/lockfile")).c_str(), O_RDWR | O_CREAT, 0666);
+        // lock db folder to this instance
+        int rc =  flock(fd, LOCK_EX | LOCK_NB);
+        if (rc) {
+            return string("ERROR: Database connected to different process!");
+        } else {
+            this->is_open = true;
+            return string("Connected to ")+db_name;
+        }
+    } else {
+        return string("ERROR: database not created!");
+    }
+}
+
+string Database::close() {
+    if (!this->is_open) {
+        return string("ERROR: Not connected to any database!");
+    }
+    string db_path = this->cwd+"/"+this->db_name;
+    // int fd = open((db_path + string("/lockfile")).c_str(), O_CREAT);
+    remove((db_path + string("/lockfile")).c_str());
+    if (1) {
+        this->is_open = false;
+        return string("rc= false");
+    }
 }
 
 string Database::print_table(Relation *relation_name, vector<string> col_names, vector<vector<string>> rows) {
@@ -280,7 +323,7 @@ string Database::update(
 }
 
 
-string Database::remove(string relation_name) {
+string Database::delete_rows(string relation_name) {
     
     vector<Relation*>::iterator relation = get_table(relation_name);
     
@@ -292,7 +335,7 @@ string Database::remove(string relation_name) {
     return "Deleted " + to_string(count) + " row(s)";
 }
 
-string Database::remove(
+string Database::delete_rows(
     string relation_name,
     string where_column_name,
     string where_data_item) {
@@ -317,10 +360,6 @@ string Database::commit() {
 
 string Database::rollback() {
     return "rollback";
-}
-
-string Database::close() {
-    return "close";
 }
 
 /* Relation Class */
