@@ -48,6 +48,10 @@ query:
     | SELECT STAR FROM IDENTIFIER EOS EOL {
         printf("%s\n", database_select(&db, $4)); }
     
+    | SELECT colnames FROM IDENTIFIER EOS EOL {
+        printf("%s\n", database_select1(&db, $4, col_names,noc));
+        noc = 0;
+    }
     ;
 dbase: DATABASE IDENTIFIER {
         $$ = $2;
@@ -74,6 +78,14 @@ col_def: IDENTIFIER datatype {
         col_names[noc] = $1;
         noc++;
     };
+colnames: col_name COMMA colnames
+    |
+    col_name
+    ;
+col_name: IDENTIFIER {
+    col_names[noc] = $1;
+    noc++;
+}
 datatype: S_DATATYPE {
         col_dts[noc] = $1;
     }
