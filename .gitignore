@@ -1,4 +1,4 @@
 clt
-/obj/*
+/obj/*.*
 /include/sql-compiler/gen/*
 /src/sql-compiler/gen/*
