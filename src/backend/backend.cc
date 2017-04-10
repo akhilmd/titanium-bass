@@ -341,11 +341,61 @@ string Database::delete_rows(
     string relation_name,
     string where_column_name,
     string where_data_item) {
-    return "remove 2";
+    vector<Relation*>::iterator relation = get_table(relation_name);
+    
+    if(relation == relations.end())
+        return "Backend error: Table does not exist";
+    
+    if ( (*relation)->get_schema().count(where_column_name) == 0 ) {
+        return "Backend error: Invalid column name '" + where_column_name + "' in where clause";
+    }
+    
+    vector<Entry*> row = (*relation)->get_rows();
+    vector<string> col_names = (*relation)->get_col_names();
+    vector<Entry*> select_rows;
+    
+    ptrdiff_t pos = find(col_names.begin(), col_names.end(), where_column_name) - col_names.begin();
+    
+    vector<vector<string>> rows;
+    vector<int> del_indexs;
+    
+    for(int j = 0; j < row.size(); j++) {
+        if(!row[j]->get_row()[pos].compare(where_data_item)) {
+            // (*relation)->pop_row(j);
+            del_indexs.push_back(j);
+        }
+    }
+    
+    if(!del_indexs.size()) {
+        return "Backend error: Invalid data item '" + where_data_item + "'";
+    }
+    
+    
+    vector<int>::reverse_iterator del_it = del_indexs.rbegin();
+    
+    for(; del_it != del_indexs.rend(); del_it++)
+        (*relation)->pop_row((*del_it));
+    
+    return "Deleted " + to_string(del_indexs.size()) + " row(s)";
 }
 
 string Database::drop_table(string relation_name) {
-    return "drop_table";
+    
+    vector<Relation*>::iterator relation = get_table(relation_name);
+    
+    if(relation == relations.end())
+        return "Backend error: Table does not exist";
+    
+    string del_relation_name = (*relation)->get_name();
+    
+    delete_rows(del_relation_name);
+    
+    ptrdiff_t pos = find(relations.begin(), relations.end(), (*relation)) - relations.begin();
+    
+    delete relations[pos];
+    relations.erase(relations.begin() + pos);
+    
+    return "Dropped relation '" + del_relation_name + "' ";
 }
 
 string Database::drop() {
@@ -363,7 +413,6 @@ string Database::commit() {
 string Database::rollback() {
     return "rollback";
 }
-
 /* Relation Class */
 
 Relation::Relation() {
@@ -389,7 +438,6 @@ vector<Relation*>::iterator Database::get_table(string relation_name) {
         if(!(*relation)->get_name().compare(relation_name))
             break;
     }
-    
     return relation;
 }
 
@@ -404,6 +452,31 @@ int Relation::clear_entries() {
     reset_row_size();
     return row_size;
 }
+
+int Relation::check_data_type(int col_num, string data_item) {
+    switch(type_code[this->schema[this->col_names[col_num]]]) {
+        case 0: {
+            char* leftover;
+            long val = strtol(data_item.c_str(), &leftover, 0);
+            if(*leftover != '\0')
+                return 1;
+            break;
+        }
+        case 1: { // To be filled later 
+            break;
+        }
+        case 2: {
+            char* endptr = 0;
+            strtod(data_item.c_str(), &endptr);
+            if(*endptr != '\0' || endptr == data_item.c_str())
+                return 3;
+            break;
+        }
+    }
+    
+    return 0;
+}
+
 
 /* Entry Class */
 

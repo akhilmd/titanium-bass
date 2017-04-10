@@ -30,8 +30,8 @@ class Entry {
         // Used for alter table
         void set_row_by_string(int index, string data);
 
-		void update_row(ptrdiff_t index, string data_item) { row[index] = data_item; }
-		vector<string> get_row() { return row; }
+        void update_row(ptrdiff_t index, string data_item) { row[index] = data_item; }
+        vector<string> get_row() { return row; }
        
         Entry& operator=(const Entry& other);
 
@@ -45,31 +45,33 @@ class Relation {
     private:
         map<string, string> schema;
         string relation_name;
-		vector<string> col_names;
+        vector<string> col_names;
         vector<Entry*> data_rows;
         int row_size;
 
     public:
-		Relation();
+        Relation();
         Relation(string relation_name, map<string, string> schema, vector<string> col_names);
         Relation(string relation_name, map<string, string> schema, vector<Entry> rows);
         Relation(string relation_name, map<string, string> schema, vector<string> keys, string primary_key);
         ~Relation();
 
-		vector<Entry*> get_rows() { return data_rows; }
+        vector<Entry*> get_rows() { return data_rows; }
         void set_name(string rName) { relation_name = rName; }
         bool delete_row(string att_name, string att_value);
         string get_name() { return relation_name; }
-		int get_row_size() { return row_size; }
-		map<string, string> get_schema() { return schema; }
-		vector<string> get_col_names() { return col_names;}
+        int get_row_size() { return row_size; }
+        map<string, string> get_schema() { return schema; }
+        vector<string> get_col_names() { return col_names;}
         int clear_entries();
-		void reset_row_size() { row_size = 0; }
-		
-		
+        void reset_row_size() { row_size = 0; }
+        
+        int check_data_type(int col_num, string data_item);
+        void pop_row(int index) { delete data_rows[index]; data_rows.erase(data_rows.begin()+ index); decrement_row_size();}
         void insert_row(vector<string> data);
-		void increment_row_size() { row_size++; }
-		
+        void increment_row_size() { row_size++; }
+        void decrement_row_size() { row_size--; }
+        
         //Operators Overloading
         Relation& operator=(const Relation& other);
         friend ostream& operator<<(ostream& os, Relation& obj);
@@ -78,22 +80,22 @@ class Relation {
 };
 
 class Database {
-    private:
+    private: 
         string cwd;
         string db_name;
-		
+        
         vector<Relation*> relations;
         int relations_size;
-		vector<Relation*>::iterator get_table(string relation_name);
+        vector<Relation*>::iterator get_table(string relation_name);
 
         void flush_to_disk(); // Used by destructor
         void get_from_disk(); // Used by constructor
 
         bool is_created;
         bool is_open;
-		
-		string print_table(Relation *relation, vector<string> col_names, vector<vector<string>> rows);
-		
+        
+        string print_table(Relation *relation, vector<string> col_names, vector<vector<string>> rows);
+        
     public:
         Database(string db_name);
         ~Database();
@@ -101,7 +103,7 @@ class Database {
         // All functions return a message that is to be displayed
         // on the CLI if at all.
 
-		// Creates a database with the name db_name.
+        // Creates a database with the name db_name.
         string create();
 
         // If database is not created, return error in all
@@ -176,6 +178,6 @@ class Database {
         // Close any open file objects.
         // Remove lock on DB.
         string close();
-		
-		string get_db_name() { return db_name; }
+        
+        string get_db_name() { return db_name; }
 };
