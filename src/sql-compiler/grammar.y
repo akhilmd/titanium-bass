@@ -18,12 +18,17 @@ char** col_dts;
 %token FROM
 %token IDENTIFIER
 %token SELECT
+%token INSERT
 %token COMMA 
 %token OP CP
 %token EQI
 %token EOS
 %token EOL
 %token STAR
+%token WHERE
+%token UPDATE
+%token SET
+%token VALUES INTO
 %token S_DATA S_DATATYPE F_DATA F_DATATYPE I_DATA I_DATATYPE
 %%
 query:
@@ -51,6 +56,19 @@ query:
     | SELECT colnames FROM IDENTIFIER EOS EOL {
         printf("%s\n", database_select1(&db, $4, col_names,noc));
         noc = 0;
+    }
+
+    | SELECT STAR FROM IDENTIFIER WHERE IDENTIFIER EQI d_item EOS EOL {
+        printf("%s\n", database_select2(&db, $4, $6, $8));
+    }
+
+    | INSERT INTO IDENTIFIER VALUES OP data-items CP EOS EOL {
+        printf("%s\n", database_insert(&db, $4, col_names, noc));
+        noc = 0;
+    }
+
+    | UPDATE IDENTIFIER SET IDENTIFIER EQI d_item WHERE IDENTIFIER EQI d_item EOS EOL {
+        printf("%s\n", database_update(&db, $2, $4, $6, $8, $10));
     }
     ;
 dbase: DATABASE IDENTIFIER {
@@ -85,7 +103,17 @@ colnames: col_name COMMA colnames
 col_name: IDENTIFIER {
     col_names[noc] = $1;
     noc++;
-}
+    }
+    ;
+data-items: d_item COMMA data-items
+    |
+    d_item
+    ;
+d_item: I_DATA { $$ = $1; col_names[noc] =$1; noc++; }
+    | F_DATA  { $$ = $1; col_names[noc] =$1; noc++;}
+    | S_DATA  { $$ = $1; col_names[noc] =$1; noc++; }
+    | IDENTIFIER { $$ = $1; col_names[noc] =$1; noc++; }
+    ;
 datatype: S_DATATYPE {
         col_dts[noc] = $1;
     }

@@ -118,19 +118,25 @@ extern int yydebug;
     FROM = 263,
     IDENTIFIER = 264,
     SELECT = 265,
-    COMMA = 266,
-    OP = 267,
-    CP = 268,
-    EQI = 269,
-    EOS = 270,
-    EOL = 271,
-    STAR = 272,
-    S_DATA = 273,
-    S_DATATYPE = 274,
-    F_DATA = 275,
-    F_DATATYPE = 276,
-    I_DATA = 277,
-    I_DATATYPE = 278
+    INSERT = 266,
+    COMMA = 267,
+    OP = 268,
+    CP = 269,
+    EQI = 270,
+    EOS = 271,
+    EOL = 272,
+    STAR = 273,
+    WHERE = 274,
+    UPDATE = 275,
+    SET = 276,
+    VALUES = 277,
+    INTO = 278,
+    S_DATA = 279,
+    S_DATATYPE = 280,
+    F_DATA = 281,
+    F_DATATYPE = 282,
+    I_DATA = 283,
+    I_DATATYPE = 284
   };
 #endif
 
@@ -150,7 +156,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 154 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:358  */
+#line 160 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -390,23 +396,23 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  17
+#define YYFINAL  21
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   58
+#define YYLAST   77
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  24
+#define YYNTOKENS  30
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  9
+#define YYNNTS  11
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  20
+#define YYNRULES  29
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  51
+#define YYNSTATES  85
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   278
+#define YYMAXUTOK   284
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -442,16 +448,17 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26,    27,    28,    29
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    29,    29,    30,    31,    35,    40,    44,    48,    51,
-      56,    60,    64,    64,    67,    81,    83,    85,    89,    92,
-      95
+       0,    34,    34,    35,    36,    40,    45,    49,    53,    56,
+      61,    65,    70,    74,    78,    82,    82,    85,    99,   101,
+     103,   108,   110,   112,   113,   114,   115,   117,   120,   123
 };
 #endif
 
@@ -461,10 +468,11 @@ static const yytype_uint8 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "CREATE", "USE", "CLOSE", "DATABASE",
-  "TABLE", "FROM", "IDENTIFIER", "SELECT", "COMMA", "OP", "CP", "EQI",
-  "EOS", "EOL", "STAR", "S_DATA", "S_DATATYPE", "F_DATA", "F_DATATYPE",
-  "I_DATA", "I_DATATYPE", "$accept", "query", "dbase", "table",
-  "col_def_list", "col_def", "colnames", "col_name", "datatype", YY_NULLPTR
+  "TABLE", "FROM", "IDENTIFIER", "SELECT", "INSERT", "COMMA", "OP", "CP",
+  "EQI", "EOS", "EOL", "STAR", "WHERE", "UPDATE", "SET", "VALUES", "INTO",
+  "S_DATA", "S_DATATYPE", "F_DATA", "F_DATATYPE", "I_DATA", "I_DATATYPE",
+  "$accept", "query", "dbase", "table", "col_def_list", "col_def",
+  "colnames", "col_name", "data-items", "d_item", "datatype", YY_NULLPTR
 };
 #endif
 
@@ -475,14 +483,14 @@ static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278
+     275,   276,   277,   278,   279,   280,   281,   282,   283,   284
 };
 # endif
 
-#define YYPACT_NINF -24
+#define YYPACT_NINF -53
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-24)))
+  (!!((Yystate) == (-53)))
 
 #define YYTABLE_NINF -1
 
@@ -493,12 +501,15 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -3,     3,    -1,     6,    -6,   -24,    14,     7,     8,     0,
-       4,     9,    11,   -24,    13,    15,    16,   -24,   -24,    10,
-      12,    17,    19,    20,    21,    22,    23,    27,   -24,   -24,
-      24,    25,    28,    29,   -24,   -15,    26,    18,   -24,   -24,
-      30,    31,   -24,   -24,   -24,   -24,   -24,    27,   -24,   -24,
-     -24
+       3,    -2,     5,    10,    -8,   -20,   -53,     0,    25,    18,
+      20,    14,    15,    23,    24,   -53,    26,    27,    28,    29,
+      16,   -53,   -53,    30,    19,    22,    31,    32,    33,    35,
+      36,    34,    37,    40,   -53,   -53,    38,    41,    -4,    43,
+     -53,    39,    42,    -3,    46,    49,   -53,   -53,    45,    44,
+      47,    -7,    -7,   -53,   -53,   -53,   -53,   -53,    40,   -53,
+      48,   -53,   -53,   -53,   -53,   -53,    51,    54,    50,   -53,
+      -7,    52,    -7,    58,    55,    53,   -53,    57,    56,   -53,
+      -7,   -53,    59,    60,   -53
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -506,24 +517,29 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       2,     0,     0,     0,     0,     3,     0,     0,     0,     0,
-       0,     0,     0,    17,     0,     0,    16,     1,    10,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     4,     5,
-       0,     0,     0,     0,    15,     0,     0,    12,     6,     7,
-       0,     0,    18,    20,    19,    14,    11,     0,     8,     9,
-      13
+       2,     0,     0,     0,     0,     0,     3,     0,     0,     0,
+       0,     0,     0,     0,     0,    20,     0,     0,    19,     0,
+       0,     1,    13,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     4,     5,     0,     0,     0,     0,
+      18,     0,     0,     0,     0,    15,     6,     7,     0,     0,
+       0,     0,     0,    27,    29,    28,    17,    14,     0,     8,
+       0,     9,    26,    25,    24,    23,     0,    22,     0,    16,
+       0,     0,     0,     0,     0,     0,    21,     0,     0,    11,
+       0,    10,     0,     0,    12
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -24,   -24,   -24,   -24,   -23,   -24,    32,   -24,   -24
+     -53,   -53,   -53,   -53,   -17,   -53,    21,   -53,   -22,   -52,
+     -53
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     6,     9,    10,    36,    37,    15,    16,    45
+      -1,     8,    11,    12,    44,    45,    17,    18,    66,    67,
+      56
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -531,50 +547,57 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-       1,     2,     3,    13,    42,    11,    43,     4,    44,     7,
-       8,    14,    12,     5,    17,    20,    18,    19,    22,    21,
-      23,    24,    27,    25,    50,     0,     0,    26,    28,    47,
-      32,    33,    13,    29,    30,    31,    35,     0,     0,    46,
-      38,    39,     0,    40,    41,     0,    48,    49,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,    34
+      68,    15,    62,    19,     9,    10,     1,     2,     3,    20,
+      16,    13,    48,     4,     5,    49,    14,    63,    74,    64,
+       6,    65,    53,     7,    54,    21,    55,    22,    82,    23,
+      24,    25,    26,    27,    28,    29,    34,    32,    31,    35,
+      30,    69,    38,    33,    39,    15,    42,    36,    37,    43,
+      76,    40,    51,    60,     0,    46,    41,    52,    47,    50,
+      57,    58,    59,    70,    61,    71,    72,    77,    75,    73,
+      79,    78,    80,    81,     0,    83,     0,    84
 };
 
 static const yytype_int8 yycheck[] =
 {
-       3,     4,     5,     9,    19,     6,    21,    10,    23,     6,
-       7,    17,     6,    16,     0,    15,     9,     9,     9,    15,
-       9,     8,    12,     8,    47,    -1,    -1,    11,    16,    11,
-       9,     9,     9,    16,    15,    15,     9,    -1,    -1,    13,
-      16,    16,    -1,    15,    15,    -1,    16,    16,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    26
+      52,     9,     9,    23,     6,     7,     3,     4,     5,     9,
+      18,     6,    16,    10,    11,    19,     6,    24,    70,    26,
+      17,    28,    25,    20,    27,     0,    29,     9,    80,     9,
+      16,    16,     9,     9,     8,     8,    17,    21,     9,    17,
+      12,    58,     9,    13,     9,     9,     9,    16,    16,     9,
+      72,    30,    13,     9,    -1,    17,    22,    15,    17,    16,
+      14,    12,    17,    15,    17,    14,    12,     9,    16,    19,
+      17,    16,    15,    17,    -1,    16,    -1,    17
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     3,     4,     5,    10,    16,    25,     6,     7,    26,
-      27,     6,     6,     9,    17,    30,    31,     0,     9,     9,
-      15,    15,     9,     9,     8,     8,    11,    12,    16,    16,
-      15,    15,     9,     9,    30,     9,    28,    29,    16,    16,
-      15,    15,    19,    21,    23,    32,    13,    11,    16,    16,
-      28
+       0,     3,     4,     5,    10,    11,    17,    20,    31,     6,
+       7,    32,    33,     6,     6,     9,    18,    36,    37,    23,
+       9,     0,     9,     9,    16,    16,     9,     9,     8,     8,
+      12,     9,    21,    13,    17,    17,    16,    16,     9,     9,
+      36,    22,     9,     9,    34,    35,    17,    17,    16,    19,
+      16,    13,    15,    25,    27,    29,    40,    14,    12,    17,
+       9,    17,     9,    24,    26,    28,    38,    39,    39,    34,
+      15,    14,    12,    19,    39,    16,    38,     9,    16,    17,
+      15,    17,    39,    16,    17
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    24,    25,    25,    25,    25,    25,    25,    25,    25,
-      26,    27,    28,    28,    29,    30,    30,    31,    32,    32,
-      32
+       0,    30,    31,    31,    31,    31,    31,    31,    31,    31,
+      31,    31,    31,    32,    33,    34,    34,    35,    36,    36,
+      37,    38,    38,    39,    39,    39,    39,    40,    40,    40
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     0,     1,     4,     4,     5,     5,     6,     6,
-       2,     5,     1,     3,     2,     3,     1,     1,     1,     1,
-       1
+      10,     9,    12,     2,     5,     1,     3,     2,     3,     1,
+       1,     3,     1,     1,     1,     1,     1,     1,     1,     1
 };
 
 
@@ -1251,79 +1274,104 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 31 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+#line 36 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
     {
         printf("%s\n", database_create(db, (yyvsp[-2])));
     }
-#line 1259 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+#line 1282 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 35 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+#line 40 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
     {
         printf("%s\n", database_create_table(&db, (yyvsp[-2]), col_names, col_dts, noc));
         noc = 0;
     }
-#line 1268 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 6:
-#line 40 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
-    {
-        printf("%s\n", database_use(&db, (yyvsp[-2])));
-    }
-#line 1276 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 7:
-#line 44 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
-    {
-        printf("%s\n", database_close(&db, (yyvsp[-2])));
-    }
-#line 1284 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 8:
-#line 48 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
-    {
-        printf("%s\n", database_select(&db, (yyvsp[-2]))); }
 #line 1291 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
     break;
 
+  case 6:
+#line 45 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+    {
+        printf("%s\n", database_use(&db, (yyvsp[-2])));
+    }
+#line 1299 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 7:
+#line 49 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+    {
+        printf("%s\n", database_close(&db, (yyvsp[-2])));
+    }
+#line 1307 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 8:
+#line 53 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+    {
+        printf("%s\n", database_select(&db, (yyvsp[-2]))); }
+#line 1314 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+    break;
+
   case 9:
-#line 51 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+#line 56 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
     {
         printf("%s\n", database_select1(&db, (yyvsp[-2]), col_names,noc));
         noc = 0;
     }
-#line 1300 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 10:
-#line 56 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
-    {
-        (yyval) = (yyvsp[0]);
-    }
-#line 1308 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 11:
-#line 60 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
-    {
-        (yyval) = (yyvsp[-3]);
-    }
-#line 1316 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 13:
-#line 64 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
-    {
-    }
 #line 1323 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
     break;
 
+  case 10:
+#line 61 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+    {
+        printf("%s\n", database_select2(&db, (yyvsp[-6]), (yyvsp[-4]), (yyvsp[-2])));
+    }
+#line 1331 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 11:
+#line 65 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+    {
+        printf("%s\n", database_insert(&db, (yyvsp[-5]), col_names, noc));
+        noc = 0;
+    }
+#line 1340 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 12:
+#line 70 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+    {
+        printf("%s\n", database_update(&db, (yyvsp[-10]), (yyvsp[-8]), (yyvsp[-6]), (yyvsp[-4]), (yyvsp[-2])));
+    }
+#line 1348 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 13:
+#line 74 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+    {
+        (yyval) = (yyvsp[0]);
+    }
+#line 1356 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+    break;
+
   case 14:
-#line 67 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+#line 78 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+    {
+        (yyval) = (yyvsp[-3]);
+    }
+#line 1364 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 16:
+#line 82 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+    {
+    }
+#line 1371 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 17:
+#line 85 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
     {
         // rudimentary check for duplicate columns
         int i = 0;
@@ -1338,44 +1386,68 @@ yyreduce:
         col_names[noc] = (yyvsp[-1]);
         noc++;
     }
-#line 1342 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 17:
-#line 85 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
-    {
-    col_names[noc] = (yyvsp[0]);
-    noc++;
-}
-#line 1351 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 18:
-#line 89 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
-    {
-        col_dts[noc] = (yyvsp[0]);
-    }
-#line 1359 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 19:
-#line 92 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
-    {
-        col_dts[noc] = (yyvsp[0]);
-    }
-#line 1367 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+#line 1390 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 95 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+#line 103 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+    {
+    col_names[noc] = (yyvsp[0]);
+    noc++;
+    }
+#line 1399 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 23:
+#line 112 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]); col_names[noc] =(yyvsp[0]); noc++; }
+#line 1405 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 24:
+#line 113 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]); col_names[noc] =(yyvsp[0]); noc++;}
+#line 1411 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 25:
+#line 114 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]); col_names[noc] =(yyvsp[0]); noc++; }
+#line 1417 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 26:
+#line 115 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+    { (yyval) = (yyvsp[0]); col_names[noc] =(yyvsp[0]); noc++; }
+#line 1423 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 27:
+#line 117 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
     {
         col_dts[noc] = (yyvsp[0]);
     }
-#line 1375 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+#line 1431 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 28:
+#line 120 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+    {
+        col_dts[noc] = (yyvsp[0]);
+    }
+#line 1439 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 29:
+#line 123 "src/sql-compiler/grammar.y" /* yacc.c:1646  */
+    {
+        col_dts[noc] = (yyvsp[0]);
+    }
+#line 1447 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1379 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
+#line 1451 "src/sql-compiler/gen/grammar.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1603,4 +1675,4 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 99 "src/sql-compiler/grammar.y" /* yacc.c:1906  */
+#line 127 "src/sql-compiler/grammar.y" /* yacc.c:1906  */
