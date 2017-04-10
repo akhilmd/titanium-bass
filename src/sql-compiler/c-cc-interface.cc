@@ -117,3 +117,56 @@ const char* database_select1(void** db, char* table_name, char** col_names, int 
         );
     return ret_val->c_str();
 }
+
+const char* database_select2(void** db, char* table_name, char* where_column, char* where_item) {
+     Database* new_db = reinterpret_cast<Database*>(*db);
+    if (new_db == NULL) {
+            return (new string("ERROR: Please connect to a database first!"))->c_str();
+    }
+    string* ret_val = new string (
+        new_db->select(
+            string(table_name),
+            string(where_column),
+            string(where_item)
+            )
+        );
+    return ret_val->c_str();
+}
+
+
+const char* database_insert(void** db, char* table_name, char** col_names, int noc) {
+     Database* new_db = reinterpret_cast<Database*>(*db);
+    if (new_db == NULL) {
+            return (new string("ERROR: Please connect to a database first!"))->c_str();
+    }
+    vector<string> v_col_names;
+    int i = 0;
+    for (i=0;i<noc;++i) {
+        v_col_names.push_back(string(col_names[i]));
+    }
+
+    string* ret_val = new string (
+        new_db->insert(
+            string(table_name),
+            v_col_names
+            )
+        );
+    return ret_val->c_str();
+}
+
+const char* database_update(void** db, char* table_name, char* col_nam, char* d_item,char* where_column, char* where_item) {
+     Database* new_db = reinterpret_cast<Database*>(*db);
+    if (new_db == NULL) {
+            return (new string("ERROR: Please connect to a database first!"))->c_str();
+    }
+    string* ret_val = new string (
+        new_db->update(
+            string(table_name),
+            string(col_nam),
+            string(d_item),
+            string(where_column),
+            string(where_item)
+            )
+        );
+    return ret_val->c_str();
+}
