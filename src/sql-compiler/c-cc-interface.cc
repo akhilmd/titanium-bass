@@ -92,3 +92,28 @@ const char* database_select(void** db, char* table_name) {
     string* ret_val = new string(new_db->select(string(table_name)));
     return ret_val->c_str();
 }
+
+const char* database_select1(void** db, char* table_name, char** col_names, int noc) {
+     Database* new_db = reinterpret_cast<Database*>(*db);
+    if (new_db == NULL) {
+            return (new string("ERROR: Please connect to a database first!"))->c_str();
+    }
+    // new_db->insert(string(table_name),{"Harsh","45"});
+    // new_db->insert(string(table_name),{"Harsh","45"});
+    // new_db->insert(string(table_name),{"Harsh","45"});
+    // new_db->insert(string(table_name),{"Harsh","45"});
+
+    vector<string> v_col_names;
+    int i = 0;
+    for (i=0;i<noc;++i) {
+        v_col_names.push_back(string(col_names[i]));
+    }
+
+    string* ret_val = new string (
+        new_db->select(
+            string(table_name),
+            v_col_names
+            )
+        );
+    return ret_val->c_str();
+}
