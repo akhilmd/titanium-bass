@@ -95,7 +95,8 @@ class Database {
         bool is_open;
         
         string print_table(Relation *relation, vector<string> col_names, vector<vector<string>> rows);
-        
+		void write_to_file();
+		
     public:
         Database(string db_name);
         ~Database();
