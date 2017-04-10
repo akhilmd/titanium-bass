@@ -134,15 +134,16 @@ const char* database_select2(void** db, char* table_name, char* where_column, ch
 }
 
 
-const char* database_insert(void** db, char* table_name, char** col_names, int noc) {
+const char* database_insert(void** db, char* table_name, char** data_item_list, int nodi) {
      Database* new_db = reinterpret_cast<Database*>(*db);
     if (new_db == NULL) {
             return (new string("ERROR: Please connect to a database first!"))->c_str();
     }
     vector<string> v_col_names;
     int i = 0;
-    for (i=0;i<noc;++i) {
-        v_col_names.push_back(string(col_names[i]));
+    for (i=nodi-1;i>=0;--i) {
+        v_col_names.push_back(string(data_item_list[i]));
+        cout << string(data_item_list[i]) << endl;
     }
 
     string* ret_val = new string (

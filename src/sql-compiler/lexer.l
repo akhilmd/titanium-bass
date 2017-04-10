@@ -26,7 +26,16 @@
 
 [a-zA-Z_][a-zA-Z0-9_]* { yylval = strdup(yytext); return IDENTIFIER; }
 
-"\""[a-zA-Z_][a-zA-Z0-9_]*"\"" { yylval = strdup(yytext); return S_DATA; }
+L?\'(\\.|[^\\"])*\' {
+	char* text = strdup(yytext);
+	char* new_text = malloc(sizeof(char) * (strlen(text) - 1));
+	text[strlen(text) - 1] = '\0';
+	strcpy(new_text, text+1);
+	free(text);
+	yylval = new_text;
+	return S_DATA;
+}
+
 [0-9][0-9]* { yylval = strdup(yytext); return I_DATA; }
 [0-9][0-9]*"."[0-9][0-9]* { yylval = strdup(yytext); return F_DATA; }
 ";" { return EOS; }
