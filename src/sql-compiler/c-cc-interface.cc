@@ -172,3 +172,73 @@ const char* database_update(void** db, char* table_name, char* col_nam, char* d_
 
     return ret_val->c_str();
 }
+
+const char* database_delete(void** db, char* table_name){
+    Database* new_db = reinterpret_cast<Database*>(*db);
+    if (new_db == NULL) {
+        return (new string("ERROR: Please connect to a database first!"))->c_str();
+    }
+    string* ret_val = new string (
+        new_db->delete_rows (
+            string(table_name)
+        )
+    );
+}
+
+const char* database_delete1(void** db, char* table_name, char* where_column, char* where_item){
+    Database* new_db = reinterpret_cast<Database*>(*db);
+    if (new_db == NULL) {
+        return (new string("ERROR: Please connect to a database first!"))->c_str();
+    }
+    string* ret_val = new string (
+        new_db->delete_rows (
+            string(table_name),
+            string(where_column),
+            string(where_item)
+        )
+    );
+}
+
+const char* database_table_drop(void** db, char* table_name){
+    Database* new_db = reinterpret_cast<Database*>(*db);
+    if (new_db == NULL) {
+        return (new string("ERROR: Please connect to a database first!"))->c_str();
+    }
+    string* ret_val = new string (
+        new_db->drop_table (
+            string(table_name)
+            )
+        );
+}
+
+const char* database_drop(void** db, char* database_name){
+    Database* new_db = reinterpret_cast<Database*>(*db);
+    if (new_db == NULL) {
+        return (new string("ERROR: Please connect to a database first!"))->c_str();
+    }
+    string* ret_val = new string (new_db->drop ());
+}
+
+const char* database_start_transaction(void** db){
+    Database* new_db = reinterpret_cast<Database*>(*db);
+    if (new_db == NULL) {
+        return (new string("ERROR: Please connect to a database first!"))->c_str();
+    }
+    string* ret_val = new string (new_db->start ());
+}
+
+const char* database_commit_transaction(void** db){
+    Database* new_db = reinterpret_cast<Database*>(*db);
+    if (new_db == NULL) {
+        return (new string("ERROR: Please connect to a database first!"))->c_str();
+    }
+    string* ret_val = new string (new_db->commit ());
+}
+
+const char* database_rollback_transaction(void** db){
+    Database* new_db = reinterpret_cast<Database*>(*db);
+    if (new_db == NULL) {
+        return (new string("ERROR: Please connect to a database first!"))->c_str();
+    }
+    string* ret_val = new string (new_db->rollback ());
+}
