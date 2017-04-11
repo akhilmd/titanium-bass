@@ -7,6 +7,9 @@ int main(int argc, char **argv) {
 
     db = backend_init();
 
+    nodi = 0;
+    dat_items = malloc(10 * sizeof (char*));
+
     // Support only 10 columns
     noc = 0;
     col_names = malloc(10 * sizeof (char*));

@@ -117,12 +117,10 @@ string Database::print_table(Relation *relation_name, vector<string> col_names, 
 }
 
 void Database::write_to_file() {
-	
-	ofstream out;
-	out.open(this->db_name + "/data.d", std::ios::binary);
-	out.write(reinterpret_cast<char*>(this), sizeof(Database));
-	out.close();
-	
+    ofstream out;
+    out.open(this->db_name + "/data.d", std::ios::binary);
+    out.write(reinterpret_cast<char*>(this), sizeof(Database));
+    out.close();
 }
 
 string Database::create_table(string relation_name, vector <string> data_types, vector<string> col_names) {
@@ -141,9 +139,9 @@ string Database::create_table(string relation_name, vector <string> data_types, 
     Relation *r = new Relation(relation_name, schema, col_names);
     this->relations.push_back(r);
     this->relations_size++;
-	
-	write_to_file();
-	
+    
+    write_to_file();
+    
     return "Table created";
 }
 
@@ -190,9 +188,9 @@ string Database::insert(string relation_name, vector<string> data_items) {
     // Entry *e = new Entry(data_items);
     (*relation)->insert_row(data_items);
     (*relation)->increment_row_size();
-	
-	write_to_file();
-	
+    
+    write_to_file();
+    
     return "Row inserted";
 }
 
@@ -336,9 +334,9 @@ string Database::update(
             change_count++;
         }
     }
-	
-	write_to_file();
-	
+    
+    write_to_file();
+    
     return "Updated " + to_string(change_count) + " row(s)";
 }
 
@@ -352,8 +350,8 @@ string Database::delete_rows(string relation_name) {
     
     int count = (*relation)->clear_entries();
     
-	write_to_file();
-	
+    write_to_file();
+    
     return "Deleted " + to_string(count) + " row(s)";
 }
 
@@ -396,8 +394,8 @@ string Database::delete_rows(
     for(; del_it != del_indexs.rend(); del_it++)
         (*relation)->pop_row((*del_it));
     
-	write_to_file();
-	
+    write_to_file();
+    
     return "Deleted " + to_string(del_indexs.size()) + " row(s)";
 }
 
@@ -417,8 +415,8 @@ string Database::drop_table(string relation_name) {
     delete relations[pos];
     relations.erase(relations.begin() + pos);
     
-	write_to_file();
-	
+    write_to_file();
+    
     return "Dropped relation '" + del_relation_name + "' ";
 }
 

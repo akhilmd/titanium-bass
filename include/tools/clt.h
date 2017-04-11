@@ -10,3 +10,6 @@ extern void* db;
 extern int noc;
 extern char** col_names;
 extern char** col_dts;
+
+extern int nodi;
+extern char** dat_items;
