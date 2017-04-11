@@ -29,6 +29,14 @@ const char* database_use(void** db, char* db_name) {
 
     string* ret_val = new string(new_db->connect());
 
+    //if ret_val startswith Connected
+    string prefix("Connected");
+    if (!ret_val->compare(0, prefix.size(), prefix)) {
+        new_db->close();
+        new_db = new_db->read_from_file();
+        ret_val = new string(new_db->connect());
+    }
+
     *db = reinterpret_cast<void*>(new_db);
 
     return ret_val->c_str();

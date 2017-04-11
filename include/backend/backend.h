@@ -12,6 +12,10 @@
 #include <stdio.h>
 #include <sys/stat.h>
 
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/string.hpp>
+
 using namespace std;
 
 // More dynamic enum of types
@@ -39,6 +43,12 @@ class Entry {
         friend ostream& operator<<(ostream& os, Entry& obj);
         friend bool operator==(Entry& lhs, Entry& rhs);
         friend bool operator!=(Entry& lhs, Entry& rhs);
+
+        friend class boost::serialization::access;
+        template<class Archive>
+        void serialize(Archive & ar, const unsigned int version) {
+            ar & row;
+        }
 };
 
 class Relation {
@@ -77,6 +87,16 @@ class Relation {
         friend ostream& operator<<(ostream& os, Relation& obj);
         friend bool operator==(Relation& lhs, Relation& rhs);
         friend bool operator!=(Relation& lhs, Relation& rhs);
+
+        friend class boost::serialization::access;
+        template<class Archive>
+        void serialize(Archive & ar, const unsigned int version) {
+            ar & schema;
+            ar & relation_name;
+            ar & col_names;
+            ar & data_rows;
+            ar & row_size;
+        }
 };
 
 class Database {
@@ -95,11 +115,18 @@ class Database {
         bool is_open;
         
         string print_table(Relation *relation, vector<string> col_names, vector<vector<string>> rows);
-		void write_to_file();
-		
+        void write_to_file();
     public:
+        Database() {};
         Database(string db_name);
         ~Database();
+
+        void set_relations(vector<Relation*> r);
+        vector<Relation*> get_relations();
+
+        void set_relations_size(int s);
+
+        Database* read_from_file();
 
         // All functions return a message that is to be displayed
         // on the CLI if at all.
@@ -181,4 +208,13 @@ class Database {
         string close();
         
         string get_db_name() { return db_name; }
+
+        friend class boost::serialization::access;
+        template<class Archive>
+        void serialize(Archive & ar, const unsigned int version) {
+            ar & db_name;
+
+            ar & relations;
+            ar & relations_size;
+        }
 };

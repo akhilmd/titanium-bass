@@ -3,11 +3,15 @@
 #include <sys/file.h>
 #include <stdio.h>
 
+#include <fstream>
+
+// include headers that implement a archive in simple text format
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+
 using namespace std;
 namespace fs = boost::filesystem;
 map<string, int> type_code = {{"int", 0}, {"string", 1}, {"float", 2}};
-
-// Dummy Implementation unless otherwise specified
 
 
 /* Database Class */
@@ -27,6 +31,7 @@ Database::~Database() {
 string Database::create() {
     string message = string("Current Working Directory: ") + this->cwd + string("\n");
     if (fs::create_directories(this->db_name)) {
+        write_to_file();
         return message+string("Database Created");
     } else {
         return message+string("Database may already exist");
@@ -116,11 +121,37 @@ string Database::print_table(Relation *relation_name, vector<string> col_names, 
     return table.str();
 }
 
+void Database::set_relations(vector<Relation*> r) {
+    this->relations = r;
+}
+
+vector<Relation*> Database::get_relations() {
+    return this->relations;
+}
+
+void Database::set_relations_size(int s) {
+    this->relations_size = s;
+}
+
 void Database::write_to_file() {
-    ofstream out;
-    out.open(this->db_name + "/data.d", std::ios::binary);
-    out.write(reinterpret_cast<char*>(this), sizeof(Database));
-    out.close();
+    ofstream ofs(cwd+"/"+db_name+"/"+"datafile");
+
+    boost::archive::text_oarchive oa(ofs);
+    oa << *this;
+}
+
+Database* Database::read_from_file () {
+    Database newg;
+
+    std::ifstream ifs(cwd+"/"+db_name+"/"+"datafile");
+    boost::archive::text_iarchive ia(ifs);
+    ia >> newg;
+
+    Database* nn = new Database(newg.get_db_name());
+    nn->set_relations(newg.get_relations());
+    nn->set_relations_size(newg.get_relations().size());
+
+    return nn;
 }
 
 string Database::create_table(string relation_name, vector <string> data_types, vector<string> col_names) {
