@@ -68,6 +68,11 @@ query:
         printf("%s\n", database_select2(&db, $4, $6, $8));
     }
     ;
+    | SELECT colnames FROM IDENTIFIER WHERE IDENTIFIER EQI d_item EOS EOL {
+        printf("%s\n", database_select3(&db, $4, col_names, noc, $6, $8));
+        noc = 0;
+    }
+    ;
     | INSERT INTO IDENTIFIER VALUES OP data_items CP EOS EOL {
         printf("%s\n", database_insert(&db, $3, dat_items, nodi));
         nodi = 0;
@@ -122,6 +127,7 @@ col_def: IDENTIFIER datatype {
         for (i=0;i<noc;++i) {
             if (strcmp(col_names[i], $1) == 0) {
                 // error out
+                noc = 0;
                 yyerror("Duplicate column names");
                 return 0;
             }

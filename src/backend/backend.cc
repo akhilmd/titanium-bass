@@ -382,7 +382,6 @@ string Database::delete_rows(string relation_name) {
     int count = (*relation)->clear_entries();
     
     write_to_file();
-    cout << "Deleted " + to_string(count) + " row(s)";
     
     return "Deleted " + to_string(count) + " row(s)";
 }
@@ -427,7 +426,7 @@ string Database::delete_rows(
         (*relation)->pop_row((*del_it));
     
     write_to_file();
-    cout << "Deleted " + to_string(del_indexs.size()) + " row(s)";
+
     return "Deleted " + to_string(del_indexs.size()) + " row(s)";
 }
 
@@ -449,29 +448,24 @@ string Database::drop_table(string relation_name) {
     
     write_to_file();
 
-    cout << "Dropped relation '" + del_relation_name + "' ";
-    
     return "Dropped relation '" + del_relation_name + "' ";
 }
 
 string Database::drop() {
-    cout << "drop database";
+    fs::remove_all(cwd+"/"+db_name);
     return "drop database";
 }
 
 string Database::start() {
-    cout << "start";
-    return "start";
+    return "tbd: start";
 }
 
 string Database::commit() {
-    cout << "commit";
-    return "commit";
+    return "tbd: commit";
 }
 
 string Database::rollback() {
-    cout << "rollback";
-    return "rollback";
+    return "tbd: rollback";
 }
 /* Relation Class */
 

@@ -1,7 +1,7 @@
 IDIR=include
 CC=g++ -std=c++11
 C=gcc -std=c99
-CFLAGS=-g
+CFLAGS=-g -w
 
 ODIR=obj
 SRCDIR=src

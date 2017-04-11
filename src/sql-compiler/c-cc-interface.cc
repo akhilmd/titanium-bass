@@ -141,6 +141,28 @@ const char* database_select2(void** db, char* table_name, char* where_column, ch
     return ret_val->c_str();
 }
 
+const char* database_select3(void** db, char* table_name, char** col_names, int noc, char* where_column, char* where_item) {
+    Database* new_db = reinterpret_cast<Database*>(*db);
+    if (new_db == NULL) {
+        return (new string("ERROR: Please connect to a database first!"))->c_str();
+    }
+
+    vector<string> v_col_names;
+    int i = 0;
+    for (i=0;i<noc;++i) {
+        v_col_names.push_back(string(col_names[i]));
+    }
+
+    string* ret_val = new string (
+        new_db->select(
+            string(table_name),
+            string(where_column),
+            string(where_item),
+            v_col_names
+        )
+    );
+    return ret_val->c_str();
+}
 
 const char* database_insert(void** db, char* table_name, char** data_item_list, int nodi) {
     Database* new_db = reinterpret_cast<Database*>(*db);
@@ -186,11 +208,14 @@ const char* database_delete(void** db, char* table_name){
     if (new_db == NULL) {
         return (new string("ERROR: Please connect to a database first!"))->c_str();
     }
+
     string* ret_val = new string (
         new_db->delete_rows (
             string(table_name)
         )
     );
+
+    return ret_val->c_str();
 }
 
 const char* database_delete1(void** db, char* table_name, char* where_column, char* where_item){
@@ -205,6 +230,8 @@ const char* database_delete1(void** db, char* table_name, char* where_column, ch
             string(where_item)
         )
     );
+
+    return ret_val->c_str();
 }
 
 const char* database_table_drop(void** db, char* table_name){
@@ -215,16 +242,22 @@ const char* database_table_drop(void** db, char* table_name){
     string* ret_val = new string (
         new_db->drop_table (
             string(table_name)
-            )
-        );
+        )
+    );
+
+    return ret_val->c_str();
 }
 
 const char* database_drop(void** db, char* database_name){
     Database* new_db = reinterpret_cast<Database*>(*db);
-    if (new_db == NULL) {
-        return (new string("ERROR: Please connect to a database first!"))->c_str();
+    if (new_db != NULL) {
+        return (new string("ERROR: Please disconnect from database first!"))->c_str();
     }
-    string* ret_val = new string (new_db->drop ());
+    new_db = new Database(string(database_name));
+    string* ret_val = new string (new_db->drop());
+    new_db = NULL;
+
+    return ret_val->c_str();
 }
 
 const char* database_start_transaction(void** db){
@@ -233,6 +266,8 @@ const char* database_start_transaction(void** db){
         return (new string("ERROR: Please connect to a database first!"))->c_str();
     }
     string* ret_val = new string (new_db->start ());
+
+    return ret_val->c_str();
 }
 
 const char* database_commit_transaction(void** db){
@@ -241,6 +276,8 @@ const char* database_commit_transaction(void** db){
         return (new string("ERROR: Please connect to a database first!"))->c_str();
     }
     string* ret_val = new string (new_db->commit ());
+
+    return ret_val->c_str();
 }
 
 const char* database_rollback_transaction(void** db){
@@ -249,4 +286,6 @@ const char* database_rollback_transaction(void** db){
         return (new string("ERROR: Please connect to a database first!"))->c_str();
     }
     string* ret_val = new string (new_db->rollback ());
+
+    return ret_val->c_str();
 }

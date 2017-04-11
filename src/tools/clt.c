@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
     while (1) {
         printf("tdb >>> ");
         gets(line);
-        if (!strcmp(line, "exit")) break;
+        if (!strcmp(line, "exit;")) break;
         strcat(line, "\n"); /* grammer requires EOL */
         bp = yy_scan_string(line);
         yy_switch_to_buffer(bp);
