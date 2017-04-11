@@ -13,8 +13,6 @@ using namespace std;
 namespace fs = boost::filesystem;
 map<string, int> type_code = {{"int", 0}, {"string", 1}, {"float", 2}};
 
-// Dummy Implementation unless otherwise specified
-
 
 /* Database Class */
 Database::Database(string db_name) {
@@ -123,25 +121,6 @@ string Database::print_table(Relation *relation_name, vector<string> col_names, 
     return table.str();
 }
 
-void Database::write_to_file() {
-    ofstream ofs(cwd+"/"+db_name+"/"+"datafile");
-
-    // create class instance
-    // const gps_position g(35, 59, 24.567f);
-
-    // save data to archive
-    {
-        boost::archive::text_oarchive oa(ofs);
-        // write class instance to archive
-        oa << *this;
-        // archive and stream closed when destructors are called
-    }
-
-    // ... some time later restore the class instance to its orginal state
-
-    // newg.print();
-}
-
 void Database::set_relations(vector<Relation*> r) {
     this->relations = r;
 }
@@ -154,17 +133,19 @@ void Database::set_relations_size(int s) {
     this->relations_size = s;
 }
 
+void Database::write_to_file() {
+    ofstream ofs(cwd+"/"+db_name+"/"+"datafile");
+
+    boost::archive::text_oarchive oa(ofs);
+    oa << *this;
+}
+
 Database* Database::read_from_file () {
     Database newg;
-    {
-        // create and open an archive for input
-        std::ifstream ifs(cwd+"/"+db_name+"/"+"datafile");
-        boost::archive::text_iarchive ia(ifs);
-        // read class state from archive
-        ia >> newg;
-        // archive and stream closed when destructors are called
-    }
-    // cout << newg->select(string("t"));
+
+    std::ifstream ifs(cwd+"/"+db_name+"/"+"datafile");
+    boost::archive::text_iarchive ia(ifs);
+    ia >> newg;
 
     Database* nn = new Database(newg.get_db_name());
     nn->set_relations(newg.get_relations());

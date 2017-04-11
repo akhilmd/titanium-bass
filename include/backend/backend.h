@@ -212,13 +212,9 @@ class Database {
         friend class boost::serialization::access;
         template<class Archive>
         void serialize(Archive & ar, const unsigned int version) {
-            // ar & cwd;
             ar & db_name;
 
             ar & relations;
             ar & relations_size;
-
-            // ar & is_created;
-            // ar & is_open;
         }
 };
