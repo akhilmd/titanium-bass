@@ -2,9 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "../../../include/sql-compiler/c-cc-interface.h"
-
 void* db;
-
 int noc;
 char** col_names;
 char** col_dts;
@@ -22,6 +20,7 @@ char** dat_items;
 %token IDENTIFIER
 %token SELECT
 %token INSERT
+%token DELETE
 %token COMMA 
 %token OP CP
 %token EQI
@@ -31,7 +30,10 @@ char** dat_items;
 %token WHERE
 %token UPDATE
 %token SET
+%token DROP
 %token VALUES INTO
+%token START TRANSACTION
+%token COMMIT ROLLBACK
 %token S_DATA S_DATATYPE F_DATA F_DATATYPE I_DATA I_DATATYPE
 %%
 query:
@@ -73,6 +75,34 @@ query:
     ;
     | UPDATE IDENTIFIER SET IDENTIFIER EQI d_item WHERE IDENTIFIER EQI d_item EOS EOL {
         printf("%s\n", database_update(&db, $2, $4, $6, $8, $10));
+    }
+    ;
+    | DELETE FROM IDENTIFIER EOS EOL {
+        printf("%s\n", database_delete(&db, $3));
+    }
+    ;
+    | DELETE FROM IDENTIFIER WHERE IDENTIFIER EQI d_item EOS EOL {
+        printf("%s\n", database_delete1(&db, $3, $5, $7));
+    }
+    ;
+    | DROP TABLE IDENTIFIER EOS EOL {
+        printf("%s\n", database_table_drop(&db, $3));
+    }
+    ;
+    | DROP dbase EOS EOL {
+        printf("%s\n", database_drop(&db, $3));
+    }
+    ;
+    | START TRANSACTION EOS EOL {
+        printf("%s\n", database_start_transaction(&db));
+    }
+    ;
+    | COMMIT TRANSACTION EOS EOL {
+        printf("%s\n", database_commit_transaction(&db));
+    }
+    ;
+    | ROLLBACK TRANSACTION EOS EOL {
+        printf("%s\n", database_rollback_transaction(&db));
     }
     ;
 dbase: DATABASE IDENTIFIER {

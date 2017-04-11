@@ -12,6 +12,8 @@
 "close" { return CLOSE; }
 "insert" { return INSERT; }
 "update" { return UPDATE; }
+"delete" { return DELETE; }
+"drop" { return DROP; }
 "set" { return SET; }
 "(" { return OP; }
 ")" { return CP; }
@@ -20,6 +22,10 @@
 "where" { return WHERE;  }
 "values" { return VALUES; }
 "into" { return INTO; }
+"start" { return START; }
+"transaction" { return TRANSACTION; }
+"commit" { return COMMIT; }
+"rollback" { return ROLLBACK; }
 "string" { yylval = strdup(yytext); return S_DATATYPE; }
 "int" { yylval = strdup(yytext); return I_DATATYPE; }
 "float" { yylval = strdup(yytext); return F_DATATYPE; }
