@@ -34,4 +34,6 @@ int main(int argc, char **argv) {
 int yyerror(char *s) {
     fprintf(stderr, "ERROR: %s!\n", s);
     printf("at: %s\n", yytext);
+    nodi = 0;
+    noc = 0;
 }
