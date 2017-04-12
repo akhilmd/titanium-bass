@@ -287,5 +287,11 @@ const char* database_rollback_transaction(void** db){
     }
     string* ret_val = new string (new_db->rollback ());
 
+    new_db->close();
+    new_db = new_db->read_from_file();
+    new_db->connect();
+
+    *db = reinterpret_cast<void*>(new_db);
+
     return ret_val->c_str();
 }

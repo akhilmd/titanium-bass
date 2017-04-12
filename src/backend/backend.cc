@@ -457,15 +457,27 @@ string Database::drop() {
 }
 
 string Database::start() {
-    return "tbd: start";
+    string file_name = "/datafile";
+    string copy_file_name = "/datafile.copy";
+    ifstream  src(this->get_db_name() + file_name, ios::binary);
+    ofstream  dst(this->get_db_name() + copy_file_name, std::ios::binary);
+    dst << src.rdbuf();
+
+    return "Started Transaction";
 }
 
 string Database::commit() {
-    return "tbd: commit";
+    string copy_file_name = "/datafile.copy";
+    remove((this->get_db_name() + copy_file_name).c_str());
+    return "Commited transcation";
 }
 
 string Database::rollback() {
-    return "tbd: rollback";
+    string file_name = "/datafile";
+    string copy_file_name = "/datafile.copy";
+    remove((this->get_db_name() + file_name).c_str());
+    rename((this->get_db_name()+copy_file_name).c_str(), (this->get_db_name()+file_name).c_str());
+    return "Rollbacked transaction";
 }
 /* Relation Class */
 
