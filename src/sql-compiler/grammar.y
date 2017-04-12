@@ -9,6 +9,7 @@ char** col_dts;
 
 int nodi;
 char** dat_items;
+char* dname;
 
 %}
 %token CREATE
@@ -48,11 +49,11 @@ query:
     }
     ;
     | USE DATABASE IDENTIFIER EOS EOL {
-        printf("%s\n", database_use(&db, $3));
+        printf("%s\n", database_use(&db, $3, dname));
     }
     ;
     | CLOSE DATABASE IDENTIFIER EOS EOL {
-        printf("%s\n", database_close(&db, $3));
+        printf("%s\n", database_close(&db, $3, dname));
     }
     ;
     | SELECT STAR FROM IDENTIFIER EOS EOL {

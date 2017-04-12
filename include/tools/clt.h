@@ -13,3 +13,5 @@ extern char** col_dts;
 
 extern int nodi;
 extern char** dat_items;
+
+extern char* dname;

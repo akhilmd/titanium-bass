@@ -14,9 +14,11 @@ int main(int argc, char **argv) {
     noc = 0;
     col_names = malloc(10 * sizeof (char*));
     col_dts = malloc(10 * sizeof (char*));
-   
+    dname = malloc(100 * sizeof(char));
+    strcpy(dname, "");
+
     while (1) {
-        printf("tdb >>> ");
+        printf("%s>>> ", dname);
         gets(line);
         if (!strcmp(line, "exit;")) break;
         strcat(line, "\n"); /* grammer requires EOL */

@@ -21,7 +21,7 @@ const char* database_create(void* db, char* db_name) {
     return ret_val->c_str();
 }
 
-const char* database_use(void** db, char* db_name) {
+const char* database_use(void** db, char* db_name, char* pref) {
     Database* new_db = reinterpret_cast<Database*>(*db);
     if (new_db == NULL) {
         new_db = new Database(string(db_name));
@@ -35,6 +35,9 @@ const char* database_use(void** db, char* db_name) {
         new_db->close();
         new_db = new_db->read_from_file();
         ret_val = new string(new_db->connect());
+
+        strcpy(pref, db_name);
+        strcat(pref, " ");
     }
 
     *db = reinterpret_cast<void*>(new_db);
@@ -42,7 +45,7 @@ const char* database_use(void** db, char* db_name) {
     return ret_val->c_str();
 }
 
-const char* database_close(void** db, char* db_name) {
+const char* database_close(void** db, char* db_name, char* pref) {
     Database* new_db = reinterpret_cast<Database*>(*db);
     if (new_db == NULL) {
         new_db = new Database(string(db_name));
@@ -54,6 +57,8 @@ const char* database_close(void** db, char* db_name) {
 
     string* ret_val = new string(new_db->close());
     *db = NULL;
+
+    strcpy(pref, "");
 
     return ret_val->c_str();
 }

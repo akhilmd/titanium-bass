@@ -5,8 +5,8 @@ extern "C"
 void* backend_init();
 
 const char* database_create(void*, char*);
-const char* database_use(void**, char*);
-const char* database_close(void**, char*);
+const char* database_use(void**, char*, char*);
+const char* database_close(void**, char*, char*);
 const char* database_create_table(void**, char*, char**, char**, int);
 const char* database_select(void**, char*);
 const char* database_select1(void**, char*, char**, int);
