@@ -8,7 +8,7 @@
 using namespace std;
 
 void* backend_init() {
-    printf("Project Titanium-Bass\n");
+    printf("Project Titanium-Bass\nCreated By: Akhil M., Ganesh K. and Harsh G.\n");
     Database* db = NULL;
 
     return reinterpret_cast<void*>(db); 
