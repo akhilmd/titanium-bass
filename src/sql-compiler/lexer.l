@@ -32,7 +32,7 @@
 
 [a-zA-Z_][a-zA-Z0-9_]* { yylval = strdup(yytext); return IDENTIFIER; }
 
-L?\'(\\.|[^\\"])*\' {
+L?\'(\\.|[^\'])*\' {
 	char* text = strdup(yytext);
 	char* new_text = malloc(sizeof(char) * (strlen(text) - 1));
 	text[strlen(text) - 1] = '\0';
