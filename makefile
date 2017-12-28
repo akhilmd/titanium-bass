@@ -1,6 +1,18 @@
-IDIR=include
-CC=g++ -std=c++11
+CHECK := $(shell which clang)
+
+ifeq ($(CHECK),)
+$(warning no clang found, consider apt-get install clang, using gcc now)
 C=gcc -std=c99
+CC=g++ -std=c++11
+else
+$(info using clang over gcc)
+CC=clang++ -std=c++11
+C=clang -std=c99
+endif
+
+IDIR=include
+#CC=g++ -std=c++11
+#C=gcc -std=c99
 CFLAGS=-g -w
 
 ODIR=obj
