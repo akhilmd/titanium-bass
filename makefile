@@ -23,7 +23,7 @@ clt:	$(SRCDIR)/tools/clt.c $(ODIR)/c-cc-interface.o $(ODIR)/backend.o $(SRCDIR)/
 	mv $(SRCDIR)/sql-compiler/gen/grammar.tab.h $(IDIR)/sql-compiler/gen/grammar.tab.h
 	flex $(SRCDIR)/sql-compiler/lexer.l
 	mv lex.yy.c $(SRCDIR)/sql-compiler/gen/lexer.yy.c
-	$(C) $(CFLAGS) -o clt $(SRCDIR)/tools/clt.c $(ODIR)/backend.o $(ODIR)/c-cc-interface.o $(SRCDIR)/sql-compiler/gen/grammar.tab.c $(SRCDIR)/sql-compiler/gen/lexer.yy.c -lfl -lstdc++ -lboost_system -lboost_filesystem -lboost_serialization
+	$(C) $(CFLAGS) -o clt $(SRCDIR)/tools/clt.c $(ODIR)/backend.o $(ODIR)/c-cc-interface.o $(SRCDIR)/sql-compiler/gen/grammar.tab.c $(SRCDIR)/sql-compiler/gen/lexer.yy.c -lfl -lstdc++ -lboost_system -lboost_filesystem -lboost_serialization -lreadline
 
 $(ODIR)/c-cc-interface.o:	$(SRCDIR)/sql-compiler/c-cc-interface.cc $(IDIR)/sql-compiler/c-cc-interface.h
 	$(CC) $(CFLAGS) -o $(ODIR)/c-cc-interface.o -c $(SRCDIR)/sql-compiler/c-cc-interface.cc
