@@ -27,6 +27,7 @@ int main(int argc, char **argv) {
         yy_delete_buffer (bp);
 		
 		free(line);
+		free(prompt);
     }
     // calc_c_cpp_close(calc);
 }

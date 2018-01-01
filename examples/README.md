@@ -8,7 +8,7 @@
   db.create();
   ```
 
-* USE <database­name>;
+* USE DATABASE <database­name>;
 
   ```
   db.open(“<database­name>”);
