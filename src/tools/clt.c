@@ -43,25 +43,15 @@ void run_python() {
     
 	init_globals();
     while (1) {
-		// char *prompt = prompt_create(dname);
-		
-		// char *line = readline(prompt);
-		
-		// if(!line || !strcmp(line, "exit;")) 
-			// break;
-		
-        // if(*line) 
-			// add_history(line);
-		
-		char line[1024] = {0};
 		
 		int new_socket = sock_create();
 		
 		while(1) {
-			
+			char line[1024] = {0};
 			int valread = read( new_socket , line, 1024);			
 			strcat(line, "\n"); /* grammar requires EOL */
 			
+			printf("\nExecute: %s", line);
 			bp = yy_scan_string(line);
 			yy_switch_to_buffer(bp);
 
@@ -70,11 +60,9 @@ void run_python() {
 			yy_flush_buffer(bp);
 			yy_delete_buffer (bp);
 			
-			
 			send(new_socket , output , strlen(output), 0 );
 			// printf("Hello message sent\n");
 			
-			free(output);
 		}
 		return 0;
 		

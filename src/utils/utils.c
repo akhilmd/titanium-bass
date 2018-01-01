@@ -65,6 +65,6 @@ void init_globals() {
     col_names = malloc(10 * sizeof (char*));
     col_dts = malloc(10 * sizeof (char*));
     dname = malloc(100 * sizeof(char));
-	output = malloc(sizeof(char) * 200);
+	output = malloc(sizeof(char) * 2000);
 	strcpy(dname, "");
 }
