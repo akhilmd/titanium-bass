@@ -6,7 +6,7 @@ void* db;
 int noc;
 char** col_names;
 char** col_dts;
-
+char* output;
 int nodi;
 char** dat_items;
 char* dname;
@@ -40,75 +40,92 @@ char* dname;
 query:
     | EOL
     | CREATE dbase EOS EOL {
-        printf("%s\n", database_create(db, $2));
+		strcpy(output, database_create(db, $2));
+        printf("%s\n", output);
     }
     ;
     | CREATE table EOS EOL {
-        printf("%s\n", database_create_table(&db, $2, col_names, col_dts, noc));
+		strcpy(output, database_create_table(&db, $2, col_names, col_dts, noc));
+        printf("%s\n", output);
         noc = 0;
     }
     ;
     | USE DATABASE IDENTIFIER EOS EOL {
-        printf("%s\n", database_use(&db, $3, dname));
+		strcpy(output, database_use(&db, $3, dname));
+        printf("%s\n", output);
     }
     ;
     | CLOSE DATABASE IDENTIFIER EOS EOL {
-        printf("%s\n", database_close(&db, $3, dname));
+		strcpy(output, database_close(&db, $3, dname));
+        printf("%s\n", output);
     }
     ;
     | SELECT STAR FROM IDENTIFIER EOS EOL {
-        printf("%s\n", database_select(&db, $4));
+		strcpy(output, database_select(&db, $4));
+        printf("%s\n", output);
     }
     ;
     | SELECT colnames FROM IDENTIFIER EOS EOL {
-        printf("%s\n", database_select1(&db, $4, col_names,noc));
+		strcpy(output, database_select1(&db, $4, col_names,noc));
+        printf("%s\n", output);
         noc = 0;
     }
     ;
     | SELECT STAR FROM IDENTIFIER WHERE IDENTIFIER EQI d_item EOS EOL {
-        printf("%s\n", database_select2(&db, $4, $6, $8));
+		strcpy(output, database_select2(&db, $4, $6, $8));
+        printf("%s\n", output);
     }
     ;
     | SELECT colnames FROM IDENTIFIER WHERE IDENTIFIER EQI d_item EOS EOL {
-        printf("%s\n", database_select3(&db, $4, col_names, noc, $6, $8));
+		strcpy(output, database_select3(&db, $4, col_names, noc, $6, $8));
+        printf("%s\n", output);
         noc = 0;
     }
     ;
     | INSERT INTO IDENTIFIER VALUES OP data_items CP EOS EOL {
-        printf("%s\n", database_insert(&db, $3, dat_items, nodi));
+		strcpy(output, database_insert(&db, $3, dat_items, nodi));
+        printf("%s\n", output);
         nodi = 0;
     }
     ;
     | UPDATE IDENTIFIER SET IDENTIFIER EQI d_item WHERE IDENTIFIER EQI d_item EOS EOL {
-        printf("%s\n", database_update(&db, $2, $4, $6, $8, $10));
+		strcpy(output, database_update(&db, $2, $4, $6, $8, $10));
+        printf("%s\n", output);
     }
     ;
     | DELETE FROM IDENTIFIER EOS EOL {
-        printf("%s\n", database_delete(&db, $3));
+		strcpy(output, database_delete(&db, $3));
+        printf("%s\n", output);
     }
     ;
     | DELETE FROM IDENTIFIER WHERE IDENTIFIER EQI d_item EOS EOL {
-        printf("%s\n", database_delete1(&db, $3, $5, $7));
+		strcpy(output, database_delete1(&db, $3, $5, $7));
+        printf("%s\n", output);
     }
     ;
     | DROP TABLE IDENTIFIER EOS EOL {
-        printf("%s\n", database_table_drop(&db, $3));
+		strcpy(output, database_table_drop(&db, $3));
+        printf("%s\n", output);
     }
     ;
     | DROP dbase EOS EOL {
-        printf("%s\n", database_drop(&db, $3));
+		strcpy(output, database_drop(&db, $3));
+        printf("%s\n", output);
     }
     ;
     | START TRANSACTION EOS EOL {
-        printf("%s\n", database_start_transaction(&db));
+		strcpy(output, database_start_transaction(&db));
+        printf("%s\n", output);
     }
     ;
     | COMMIT TRANSACTION EOS EOL {
-        printf("%s\n", database_commit_transaction(&db));
+		strcpy(output, database_commit_transaction(&db));
+        printf("%s\n", output);
     }
     ;
     | ROLLBACK TRANSACTION EOS EOL {
-        printf("%s\n", database_rollback_transaction(&db));
+		strcpy(output, database_rollback_transaction(&db));
+        printf("%s\n", output);
     }
     ;
 dbase: DATABASE IDENTIFIER {

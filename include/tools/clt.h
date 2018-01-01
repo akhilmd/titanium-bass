@@ -20,5 +20,7 @@ extern char** dat_items;
 
 extern char* dname;
 
+extern char* output;
+
 char *prompt_create(char *dbname);
 void init_globals();
