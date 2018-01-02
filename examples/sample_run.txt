@@ -1,0 +1,49 @@
+Project Titanium-Bass
+Created By: Akhil M., Ganesh K. and Harsh G.
+>>> create database db1;
+Current Working Directory: /mnt/g/Study_Material/Coding/titanium-bass
+Database Created
+>>> use database db1;
+Connected to db1
+db1 >>> create table stats (id int, month int, temp float, rain float);
+Table created
+db1 >>> insert into stats values (13, 1, 57.4, 0.31);
+Row inserted
+db1 >>> insert into stats values  (13, 7, 91.7, 5.15);
+Row inserted
+db1 >>> insert into stats values(44, 1, 27.3, 0.18);
+Row inserted
+db1 >>> insert into stats values (44, 7, 74.8, 2.11);
+Row inserted
+db1 >>> insert into stats values (66, 1, 6.7, 2.10);
+Row inserted
+db1 >>> insert into stats values (66, 7, 65.8, 4.52);
+Row inserted
+db1 >>>
+db1 >>> select * from stats;
++----------+----------+----------+----------+
+|id        |month     |temp      |rain      |
++----------+----------+----------+----------+
+|13        |1         |57.4      |0.31      |
++----------+----------+----------+----------+
+|13        |7         |91.7      |5.15      |
++----------+----------+----------+----------+
+|44        |1         |27.3      |0.18      |
++----------+----------+----------+----------+
+|44        |7         |74.8      |2.11      |
++----------+----------+----------+----------+
+|66        |1         |6.7       |2.10      |
++----------+----------+----------+----------+
+|66        |7         |65.8      |4.52      |
++----------+----------+----------+----------+
+
+db1 >>> select * from stats where id=44;
++----------+----------+----------+----------+
+|id        |month     |temp      |rain      |
++----------+----------+----------+----------+
+|44        |1         |27.3      |0.18      |
++----------+----------+----------+----------+
+|44        |7         |74.8      |2.11      |
++----------+----------+----------+----------+
+
+db1 >>> exit;

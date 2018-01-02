@@ -2,3 +2,4 @@
 /obj/*.o
 /include/sql-compiler/gen/*.h
 /src/sql-compiler/gen/*.c
+/tmp/*.*
