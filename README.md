@@ -35,7 +35,8 @@ For python api: [STILL IN DEV PHASE]
 ```
 ./clt -p # To start listening
 python3 titaniumLite/titaniumLite.py # To execute commands 
-``
+```
+
 ### Authors: ###
 
 * **Durga Akhil Mundroy** - [akhilmd](https://github.com/akhilmd)
