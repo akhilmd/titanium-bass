@@ -16,15 +16,15 @@ class titaniumLite:
 
 	def execute(self, query):
 		self.s.send(query.encode())
-		return self.dataframe(self.s.recv(1024))
+		return self.__dataframe(self.s.recv(2024))
 	
-	def dataframe(self, output):
+	def __dataframe(self, output):
 		table = output
 		return table.decode()
 
 if __name__ == '__main__':
 	t = titaniumLite()
 	print(t.execute('use database db1;'))
-	# t.execute('select * from stats;')
+	print(t.execute('select * from stats;'))
 	del t
 	

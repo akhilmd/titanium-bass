@@ -4,12 +4,22 @@ The project involved designing and building a command line tool for user interac
 
 ### Prerequisites
 
+* gcc version 5.4.0 or higher
 * g++ version 6.3.0 or higher
 * boost-1.65.1-2 or higher
+* clang version 3.8.0-2ubuntu4 or higher [optional]
+* GNU Readline and History
+* Python3 Pandas-0.16.2 or higher 
 
 ### Installing
 
-First compile the project on your local system by:
+First install all the required packages. Ubuntu users can run install.sh as: [NOTE: It can take a considerably long time]
+
+```
+sudo ./install.sh
+```
+
+Compile the project on your local system by:
 
 ```
 make clean
@@ -18,8 +28,14 @@ make
 
 ### Usage
 
-Please see this [README](https://github.com/DarkFate13/Titanium-Bass/blob/master/examples/README.md)
+Please see this [README](https://github.com/DarkFate13/Titanium-Bass/blob/master/examples/README.md) for raw usage
 
+For python api: [STILL IN DEV PHASE]
+
+```
+./clt -p # To start listening
+python3 titaniumLite/titaniumLite.py # To execute commands 
+``
 ### Authors: ###
 
 * **Durga Akhil Mundroy** - [akhilmd](https://github.com/akhilmd)
